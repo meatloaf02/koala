@@ -39,6 +39,19 @@ class CoreDataManager {
 
     func addSamplePlayers() {
         let context = persistentContainer.viewContext
+        
+        // Check if players already exist to prevent duplicates
+        let fetchRequest: NSFetchRequest<PlayerEntity> = PlayerEntity.fetchRequest()
+        
+        do {
+            let existingPlayers = try context.fetch(fetchRequest)
+            if !existingPlayers.isEmpty {
+                print("Sample players already exist, skipping insertion.")
+                return
+            }
+        } catch {
+            print("Failed to fetch existing players: \(error.localizedDescription)")
+        }
 
         let players = [
             ("Jake Martinez", "Pitcher", "ERA: 2.8, 50 Strikeouts", "player1", 1000.0),
@@ -57,6 +70,7 @@ class CoreDataManager {
         }
 
         saveContext()
+        print("Sample players added successfully.")
     }
 
     func fetchPlayers() -> [PlayerEntity] {
