@@ -9,6 +9,18 @@ import SwiftUI
 
 @main
 struct YouthBaseballSponsorshipApp: App {
+    @AppStorage("hasSeenWelcomeScreen") private var hasSeenWelcomeScreen: Bool = false
+
+    var body: some Scene {
+        WindowGroup {
+            if hasSeenWelcomeScreen {
+                SponsorshipView()
+            } else {
+                OnboardingView()
+            }
+        }
+    }
+}
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {
@@ -17,4 +29,5 @@ struct YouthBaseballSponsorshipApp: App {
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
-}
+
+
