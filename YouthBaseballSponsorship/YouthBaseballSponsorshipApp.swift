@@ -7,20 +7,15 @@
 
 import SwiftUI
 
+
 @main
 struct YouthBaseballSponsorshipApp: App {
-    @AppStorage("hasCompletedProfileSetup") private var hasCompletedProfileSetup: Bool = false
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {
         WindowGroup {
-            if hasCompletedProfileSetup {
-                SponsorshipView()
-                    .environment(\.managedObjectContext, persistenceController.context)
-            } else {
-                PlayerRegistrationView()
-                    .environment(\.managedObjectContext, persistenceController.context)
-            }
+            WelcomeView() // ✅ Always starts on Welcome Screen
+                .environment(\.managedObjectContext, persistenceController.context)
         }
     }
 }
