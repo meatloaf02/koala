@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-extension PlayerEntity {
+extension YouthBaseballSponsorship.PlayerEntity {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<PlayerEntity> {
         return NSFetchRequest<PlayerEntity>(entityName: "PlayerEntity")

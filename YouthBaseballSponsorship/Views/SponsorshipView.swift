@@ -43,17 +43,17 @@ struct PlayerRow: View {
 
     var body: some View {
         HStack {
-            Image(player.profileImage)
+            Image(player.profileImage ?? "No Image")
                 .resizable()
                 .frame(width: 50, height: 50)
                 .clipShape(Circle())
 
             VStack(alignment: .leading) {
-                Text(player.name)
+                Text(player.name ?? "Unknown Player")
                     .font(.headline)
-                Text(player.position)
+                Text(player.position ?? "No Position")
                     .font(.subheadline)
-                Text(player.stats)
+                Text(player.stats ?? "No stats")
                     .font(.caption)
             }
         }
@@ -72,12 +72,12 @@ struct SponsorshipDetailsView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                Image(player.profileImage)
+                Image(player.profileImage ?? "No Image")
                     .resizable()
                     .frame(width: 100, height: 100)
                     .clipShape(Circle())
                 
-                Text(player.name)
+                Text(player.name ?? "Unknown Player")
                     .font(.title)
                 
                 Toggle("Performance-Based Sponsorship", isOn: $isPerformanceBased)
@@ -110,7 +110,7 @@ struct SponsorshipDetailsView: View {
                         .cornerRadius(10)
                 }
                 .sheet(isPresented: $showingMessageComposer) {
-                    MessageComposerView(amount: sponsorshipAmount, playerName: player.name)
+                    MessageComposerView(amount: sponsorshipAmount, playerName: player.name ?? "No Amount")
                 }
                 
                 // Apple Cash Payment Instructions

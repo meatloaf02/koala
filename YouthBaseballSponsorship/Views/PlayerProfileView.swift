@@ -32,16 +32,17 @@
 
 import SwiftUI
 import Foundation
+import CoreData
 
 struct PlayerProfileView: View {
-    @State private var player: Player?
+    @State private var player: PlayerEntity?
 
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
                 if let player = player {
                     // Ensure image loading works correctly
-                    if let uiImage = UIImage(named: player.profileImage) {
+                    if let imageName = player.profileImage, let uiImage = UIImage(named: imageName) {
                         Image(uiImage: uiImage)
                             .resizable()
                             .frame(width: 120, height: 120)
@@ -54,11 +55,11 @@ struct PlayerProfileView: View {
                             .foregroundColor(.gray)
                     }
 
-                    Text(player.name)
+                    Text(player.name ?? "Unknown Player")
                         .font(.title)
                         .bold()
 
-                    Text(player.position)
+                    Text(player.position ?? "No Position")
                         .font(.headline)
                         .foregroundColor(.gray)
 
@@ -84,14 +85,16 @@ struct PlayerProfileView: View {
     }
 
     private func loadPlayerProfile() {
-        // Example Player Data
-        player = Player(
-            id: UUID(),
-            name: "Jake Martinez",
-            position: "Pitcher",
-            stats: "ERA: 2.8",
-            profileImage: "player1", // Ensure this image exists in the asset catalog
-            fundingGoal: 1000
-        )
+        let context = CoreDataManager.shared.context
+        let fetchRequest: NSFetchRequest<PlayerEntity> = PlayerEntity.fetchRequest()
+
+        do {
+            let players = try context.fetch(fetchRequest)
+            if let firstPlayer = players.first { // Assuming you're displaying only one player
+                player = firstPlayer
+            }
+        } catch {
+            print("Failed to fetch player profile: \(error.localizedDescription)")
+        }
     }
 }

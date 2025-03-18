@@ -41,8 +41,7 @@ class CoreDataManager {
         let context = persistentContainer.viewContext
         
         // Check if players already exist to prevent duplicates
-        let fetchRequest: NSFetchRequest<PlayerEntity> = PlayerEntity.fetchRequest()
-        
+        let fetchRequest: NSFetchRequest<PlayerEntity> = NSFetchRequest(entityName: "PlayerEntity")
         do {
             let existingPlayers = try context.fetch(fetchRequest)
             if !existingPlayers.isEmpty {
@@ -66,7 +65,7 @@ class CoreDataManager {
             newPlayer.position = player.1
             newPlayer.stats = player.2
             newPlayer.profileImage = player.3
-            newPlayer.fundingGoal = player.4 // Ensure fundingGoal is stored as Double
+            newPlayer.fundingGoal = player.4
         }
 
         saveContext()
