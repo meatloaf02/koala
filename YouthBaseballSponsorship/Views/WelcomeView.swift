@@ -25,7 +25,7 @@ struct WelcomeView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
 
-                Image(systemName: "sportscourt")
+                Image("youth baseball")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 200, height: 200)
