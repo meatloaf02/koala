@@ -4,31 +4,6 @@
 //
 //  Created by Marco Siliezar on 3/7/25.
 //
-//
-//  PlayerProfileView.swift
-//  YouthBaseballSponsorship
-//
-//  Created by Marco Siliezar on 3/7/25.
-//
-//
-//  PlayerProfileView.swift
-//  YouthBaseballSponsorship
-//
-//  Created by Marco Siliezar on 3/7/25.
-//
-
-//
-//  PlayerProfileView.swift
-//  YouthBaseballSponsorship
-//
-//  Created by Marco Siliezar on 3/7/25.
-//
-//
-//  PlayerProfileView.swift
-//  YouthBaseballSponsorship
-//
-//  Created by Marco Siliezar on 3/7/25.
-//
 
 import SwiftUI
 import Foundation
@@ -41,7 +16,7 @@ struct PlayerProfileView: View {
     @AppStorage("hasCompletedProfileSetup") private var hasCompletedProfileSetup: Bool = true
 
     var body: some View {
-        NavigationView {
+        ZStack {
             VStack(spacing: 20) {
                 if let player = players.first {
                     Image(systemName: "person.crop.circle.fill")
@@ -73,6 +48,7 @@ struct PlayerProfileView: View {
                             .cornerRadius(10)
                     }
                     .padding(.top, 20)
+
                 } else {
                     Text("No player profile found.")
                 }

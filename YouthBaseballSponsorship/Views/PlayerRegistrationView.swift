@@ -18,23 +18,27 @@ struct PlayerRegistrationView: View {
     @State private var selectedImage: UIImage?
     @State private var showingImagePicker = false
     @State private var showingResetConfirmation = false
+    @State private var navigateToCreateEvent = false
     @AppStorage("hasCompletedProfileSetup") private var hasCompletedProfileSetup: Bool = false
+    @AppStorage("currentPlayerId") private var currentPlayerId: String = ""
+    @AppStorage("currentUserRole") private var currentUserRole: String = ""
+    @AppStorage("hasRegistered") private var hasRegistered: Bool = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("Player Info")) {
                     TextField("Full Name", text: $name)
                     TextField("Position", text: $position)
                     TextField("Team Name", text: $team)
                 }
-
+                
                 Section(header: Text("Sponsorship Goal")) {
                     Stepper(value: $fundingGoal, in: 100...5000, step: 50) {
                         Text("Goal: $\(Int(fundingGoal))")
                     }
                 }
-
+                
                 Section(header: Text("Profile Picture")) {
                     if let image = selectedImage {
                         Image(uiImage: image)
@@ -47,7 +51,7 @@ struct PlayerRegistrationView: View {
                         showingImagePicker = true
                     }
                 }
-
+                
                 Section {
                     Button(action: saveProfile) {
                         Text("Complete Setup")
@@ -59,7 +63,7 @@ struct PlayerRegistrationView: View {
                             .cornerRadius(10)
                     }
                 }
-
+                
                 Section {
                     Button(action: {
                         showingResetConfirmation = true
@@ -89,11 +93,15 @@ struct PlayerRegistrationView: View {
                 ImagePicker(selectedImage: $selectedImage)
             }
         }
+        .navigationDestination(isPresented: $navigateToCreateEvent) {
+            CreateEventView()
+        }
     }
 
     private func saveProfile() {
+        let newId = UUID()
         let newPlayer = PlayerEntity(context: viewContext)
-        newPlayer.id = UUID()
+        newPlayer.id = newId
         newPlayer.name = name
         newPlayer.position = position
         newPlayer.stats = "No stats yet"
@@ -102,7 +110,11 @@ struct PlayerRegistrationView: View {
 
         do {
             try viewContext.save()
+            currentPlayerId = newId.uuidString // ✅ Save to AppStorage for use in event creation
             hasCompletedProfileSetup = true
+            navigateToCreateEvent = true
+            currentUserRole = "player"
+            hasRegistered = true
         } catch {
             print("Failed to save profile: \(error.localizedDescription)")
         }
